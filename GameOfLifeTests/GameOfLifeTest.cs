@@ -120,7 +120,16 @@ public class Game(List<Cell> cells)
 
     public Game NextGeneration()
     {
-        return new Game(GridConstraint, [new Cell(1, 1)]);
+        List<Cell> aliveCells = [];
+        for (var x = 0; x < GridConstraint; x++)
+        {
+            for (var y = 0; y < GridConstraint; y++)
+            {
+                if (IsAliveInNextGeneration(new Cell(x, y)))
+                    aliveCells.Add(new Cell(x,y));
+            }
+        }
+        return new Game(GridConstraint, aliveCells);
     }
 }
 
