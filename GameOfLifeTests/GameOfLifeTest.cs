@@ -19,13 +19,13 @@ public class Tests
     [Test]
     public void GetNeighbourCellsOfACell()
     {
-        var cell = new Cell(1, 1);
-        List<Cell> cells = [new(0,0), new(1,1), new(2,2)];
+        var cell = new Cell(0, 1);
+        List<Cell> cells = [new(0,0), new(0,1), new(2,2), new(2,1)];
         var game = new Game(cells);
         var neighbourCells = game.GetNeighbourCells(cell);
-        Assert.That(neighbourCells, Contains.Item(cells[0]));
-        Assert.That(neighbourCells, Contains.Item(cells[2]));
+        Assert.That(neighbourCells, Contains.Item(new Cell(0,0)));
         Assert.That(neighbourCells, Does.Not.Contain(cell));
+        Assert.That(neighbourCells, Has.Count.EqualTo(1));
     }
     
     [Test]
@@ -81,6 +81,7 @@ public class Tests
         var game = new Game(gridConstraint, cells);
         Game nextGeneration = game.NextGeneration();
         Assert.That(nextGeneration.GetLiveCells(), Contains.Item(new Cell(1,1)));
+        Assert.That(nextGeneration.GetLiveCells(), Has.Count.EqualTo(1));
     }
 }
 
@@ -105,7 +106,7 @@ public class Game(List<Cell> cells)
         {
             var xDeltas = gamecell.X <= cell.X + 1 && gamecell.X >= cell.X - 1;
             var yDeltas = gamecell.Y <= cell.Y + 1 && gamecell.Y >= cell.Y - 1;
-            return gamecell != cell && (xDeltas || yDeltas);
+            return gamecell != cell && (xDeltas && yDeltas);
         }).ToList();
     }
 
