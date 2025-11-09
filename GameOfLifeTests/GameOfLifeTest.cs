@@ -103,7 +103,7 @@ public class Game(List<Cell> cells)
         GridConstraint = gridConstraint;
     }
 
-    public int GridConstraint { get; } = 3;
+    private int GridConstraint { get; } = 3;
     private List<Cell> Cells { get; } = cells;
 
     public List<Cell> GetLiveCells()
@@ -117,7 +117,7 @@ public class Game(List<Cell> cells)
         {
             var xDeltas = gamecell.X <= cell.X + 1 && gamecell.X >= cell.X - 1;
             var yDeltas = gamecell.Y <= cell.Y + 1 && gamecell.Y >= cell.Y - 1;
-            return gamecell != cell && (xDeltas && yDeltas);
+            return gamecell != cell && xDeltas && yDeltas;
         }).ToList();
     }
 
