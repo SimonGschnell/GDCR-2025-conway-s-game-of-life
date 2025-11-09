@@ -38,7 +38,7 @@ public class Tests
     }
     
     [Test]
-    public void If_Dead_Cell_Has_2_Neighbours_It_Does_Not_Come_To_Life()
+    public void If_Dead_Cell_Has_2_Neighbours_It_Stays_Dead()
     {
         List<Cell> cells = [new(0,0), new(2,2)];
         var game = new Game(cells);
