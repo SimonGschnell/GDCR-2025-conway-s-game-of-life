@@ -77,9 +77,9 @@ public class Tests
     public void Next_Generation_Is_Created_Correctly()
     {
         List<Cell> cells = [new(0,0),new(2,2),new(2,1)];
-        var gridConstraint = 3;
+        const int gridConstraint = 3;
         var game = new Game(gridConstraint, cells);
-        Game nextGeneration = game.NextGeneration();
+        var nextGeneration = game.NextGeneration();
         Assert.That(nextGeneration.GetLiveCells(), Contains.Item(new Cell(1,1)));
         Assert.That(nextGeneration.GetLiveCells(), Has.Count.EqualTo(1));
     }
