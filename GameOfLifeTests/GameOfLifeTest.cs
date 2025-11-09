@@ -34,6 +34,15 @@ public class Tests
         var cellState = game.IsAlive(new Cell(1,1));
         Assert.That(cellState, Is.True);
     }
+    
+    [Test]
+    public void If_Cell_Has_Less_Than_2_Neighbours_It_Dies()
+    {
+        List<Cell> cells = [new(0,0),new(1,1)];
+        var game = new Game(cells);
+        var cellState = game.IsAlive(new Cell(1,1));
+        Assert.That(cellState, Is.False);
+    }
 }
 
 public class Game(List<Cell> cells)
