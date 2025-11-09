@@ -94,17 +94,42 @@ public class Tests
         var secondGeneration = firstGeneration.NextGeneration();
         Assert.That(secondGeneration.GetLiveCells(), Has.Count.EqualTo(0));
     }
+    
+    [Test]
+    public void Not_Possible_To_Create_Cells_Outside_Of_GridConstraint()
+    {
+        List<Cell> cells = [new(0,0),new(2,2),new(2,1), new(4,4)];
+        const int gridConstraint = 4;
+        Assert.Throws<Exception>(()=>
+        {
+            _ = new Game(gridConstraint,cells);
+        });
+    }
 }
 
-public class Game(List<Cell> cells)
+public class Game
 {
     public Game(int gridConstraint, List<Cell> list) : this(list)
     {
         GridConstraint = gridConstraint;
     }
 
+    public Game(List<Cell> cells)
+    {
+        if (CellsOutOfBoundary(cells))
+        {
+            throw new Exception("Cells are out of boundary");
+        }
+        Cells = cells;
+    }
+
+    private bool CellsOutOfBoundary(List<Cell> cells)
+    {
+        return cells.Where(cell => cell.X >= GridConstraint || cell.Y >= GridConstraint).ToList().Count > 0;
+    }
+
     private int GridConstraint { get; } = 3;
-    private List<Cell> Cells { get; } = cells;
+    private List<Cell> Cells { get; }
 
     public List<Cell> GetLiveCells()
     {
