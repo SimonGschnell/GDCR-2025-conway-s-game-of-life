@@ -83,6 +83,17 @@ public class Tests
         Assert.That(nextGeneration.GetLiveCells(), Contains.Item(new Cell(1,1)));
         Assert.That(nextGeneration.GetLiveCells(), Has.Count.EqualTo(1));
     }
+    
+    [Test]
+    public void Next_Generation_Is_Created_Correctly_After_2_Generations()
+    {
+        List<Cell> cells = [new(0,0),new(2,2),new(2,1)];
+        const int gridConstraint = 3;
+        var game = new Game(gridConstraint, cells);
+        var firstGeneration = game.NextGeneration();
+        var secondGeneration = firstGeneration.NextGeneration();
+        Assert.That(secondGeneration.GetLiveCells(), Has.Count.EqualTo(0));
+    }
 }
 
 public class Game(List<Cell> cells)
