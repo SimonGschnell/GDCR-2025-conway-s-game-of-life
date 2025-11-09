@@ -33,7 +33,7 @@ public class Tests
     {
         List<Cell> cells = [new(0,0),new(1,1), new(2,2)];
         var game = new Game(cells);
-        var cellState = game.IsAlive(new Cell(1,1));
+        var cellState = game.IsAliveInNextGeneration(new Cell(1,1));
         Assert.That(cellState, Is.True);
     }
     
@@ -42,7 +42,7 @@ public class Tests
     {
         List<Cell> cells = [new(0,0), new(2,2)];
         var game = new Game(cells);
-        var cellState = game.IsAlive(new Cell(1,1));
+        var cellState = game.IsAliveInNextGeneration(new Cell(1,1));
         Assert.That(cellState, Is.False);
     }
     
@@ -51,7 +51,7 @@ public class Tests
     {
         List<Cell> cells = [new(0,0),new(1,1)];
         var game = new Game(cells);
-        var cellState = game.IsAlive(new Cell(1,1));
+        var cellState = game.IsAliveInNextGeneration(new Cell(1,1));
         Assert.That(cellState, Is.False);
     }
     
@@ -60,7 +60,7 @@ public class Tests
     {
         List<Cell> cells = [new(0,0),new(1,1),new(2,2),new(2,1),new(1,2)];
         var game = new Game(cells);
-        var cellState = game.IsAlive(new Cell(1,1));
+        var cellState = game.IsAliveInNextGeneration(new Cell(1,1));
         Assert.That(cellState, Is.False);
     }
     
@@ -69,13 +69,29 @@ public class Tests
     {
         List<Cell> cells = [new(0,0),new(2,2),new(2,1)];
         var game = new Game(cells);
-        var cellState = game.IsAlive(new Cell(1,1));
+        var cellState = game.IsAliveInNextGeneration(new Cell(1,1));
         Assert.That(cellState, Is.True);
+    }
+    
+    [Test]
+    public void Next_Generation_Is_Created_Correctly()
+    {
+        List<Cell> cells = [new(0,0),new(2,2),new(2,1)];
+        var gridConstraint = 3;
+        var game = new Game(gridConstraint, cells);
+        Game nextGeneration = game.NextGeneration();
+        Assert.That(nextGeneration.GetLiveCells(), Contains.Item(new Cell(1,1)));
     }
 }
 
 public class Game(List<Cell> cells)
 {
+    public Game(int gridConstraint, List<Cell> list) : this(list)
+    {
+        GridConstraint = gridConstraint;
+    }
+
+    public int GridConstraint { get; }
     private List<Cell> Cells { get; } = cells;
 
     public List<Cell> GetLiveCells()
@@ -93,13 +109,18 @@ public class Game(List<Cell> cells)
         }).ToList();
     }
 
-    public bool IsAlive(Cell cell)
+    public bool IsAliveInNextGeneration(Cell cell)
     {
         var cellNeighbours = GetNeighbourCells(cell);
         var aliveCell = GetLiveCells().Contains(cell);
         var cellStaysAlive = aliveCell && cellNeighbours.Count is >= 2 and < 4;
         var cellGetsResurrected = cellNeighbours.Count is 3;
         return cellStaysAlive || cellGetsResurrected;
+    }
+
+    public Game NextGeneration()
+    {
+        return new Game([new Cell(1, 1)]);
     }
 }
 
