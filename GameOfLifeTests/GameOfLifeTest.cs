@@ -91,7 +91,7 @@ public class Game(List<Cell> cells)
         GridConstraint = gridConstraint;
     }
 
-    public int GridConstraint { get; }
+    public int GridConstraint { get; } = 3;
     private List<Cell> Cells { get; } = cells;
 
     public List<Cell> GetLiveCells()
@@ -120,7 +120,7 @@ public class Game(List<Cell> cells)
 
     public Game NextGeneration()
     {
-        return new Game([new Cell(1, 1)]);
+        return new Game(GridConstraint, [new Cell(1, 1)]);
     }
 }
 
